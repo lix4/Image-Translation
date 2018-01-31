@@ -1,11 +1,11 @@
-%% Initializing Detector DataSets
+%%dataset locations
 trainDdata = 'dataset/trDd.mat';
 testDdata = 'dataset/teDd.mat';
 validateDdata = 'dataset/vaDd.mat';
 
 trainRdata = 'dataset/trRd.mat';
 testRdata = 'dataset/teRd.mat';
-
+%%Initializing DataSets
 curdir = pwd
 
 %rootdir = './images/';
@@ -13,7 +13,7 @@ imagesdir = '/images/';
 rootdir = strcat(curdir,imagesdir)
 
 if exist(trainDdata) == 2
-    l = load(trainDdata);
+    l = load(trainDdate);
     trainDImages = l.trainDImages;
 else   
 subdir = [rootdir 'train'];
@@ -31,7 +31,7 @@ end
 
 
 if exist(validateDdata) == 2
-    l = load(validateDdata);
+    l = load(validateDdate);
     validateDImages = l.validateDImages;
 else   
 subdir = [rootdir 'validate'];
@@ -44,7 +44,7 @@ validateDImages = imageDatastore(...
 end
 
 if exist(testDdata) == 2
-    l = load(testDdata);
+    l = load(testDdate);
     tesDImages = l.testDImages;
 else   
 subdir = [rootdir 'test'];
@@ -118,7 +118,7 @@ imagesdir = '/rImages/';
 rootdir = strcat(curdir,imagesdir);
 
 if exist(trainRdata) == 2
-    l = load(trainRdata);
+    l = load(trainRdate);
     trainRImages = l.trainRImages;
 else  
 subdir = [rootdir 'train'];
@@ -131,7 +131,7 @@ trainRImages = imageDatastore(...
 end
 
 if exist(testRdata) == 2
-    l = load(testRdata);
+    l = load(testRdate);
     testRImages = l.testRImages;
 else  
 subdir = [rootdir 'test'];
