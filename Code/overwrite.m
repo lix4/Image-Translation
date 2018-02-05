@@ -53,5 +53,8 @@ f_img = im2uint8(double_img);
 % imshow(f_img);
 
 % insert text
-RGB = insertText(f_img, [25 49], 'abc', 'FontSize', 30, 'TextColor', 'red');
+text_str = cell(1,1);
+text_str{1} = [''];
+position = [30 8]; 
+RGB = insertText(f_img, position, text_str,'BoxOpacity', 0, 'FontSize', 20, 'TextColor', means(1, :));
 imshow(RGB);
