@@ -53,7 +53,7 @@ f_img = im2uint8(double_img);
 % imshow(f_img);
 % insert text
 text_str = cell(1,1);
-text_str{1} = ['?????'];
+text_str{1} = ['???'];
 position = [7 2]; 
 RGB = insertText(f_img, position, text_str,'BoxOpacity', 0, 'FontSize', 15, 'TextColor', means(1, :), 'Font', 'MS PMincho');
 imshow(RGB);
