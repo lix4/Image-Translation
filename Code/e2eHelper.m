@@ -1,5 +1,23 @@
-function e2eHelper (img2cut, ratio)
-scalez = strcat('Reading with scale of (',  num2str(ratio), ')\n');
+function [X, Y, img2cut, I] = e2eHelper (img2cut, ratio)
+%% debugging
+%{
+curdir = pwd
+imagesdir = '/images2Cut/';
+rootdir = strcat(curdir,imagesdir,'5191_1.png')
+
+
+img2cut = imread(rootdir);
+
+if (size(img2cut,3) == 3)
+    img2cut = rgb2gray(img2cut);
+end
+
+ratio = 1
+%}
+
+
+%% actual start
+scalez = strcat('Detecting with scale of (',  num2str(ratio), ')\n');
 fprintf(scalez);
 dCNN = 'CNN/OldDetector.mat';
 l = load(dCNN);
@@ -7,7 +25,7 @@ dNet = l.dNet;
 
 num1  = size(img2cut,2);
 numRat = int16(num1 * ratio);
-img2cut = imresize(img2cut,[32,32+numRat]);
+img2cut = imresize(img2cut,[32 32+numRat]);
 
 curdir = pwd;
 imagesdir = '/cutImages/';
@@ -15,7 +33,7 @@ rootdir = strcat(curdir,imagesdir);
 dirdir = strcat(num2str(ratio), '/1');
 subdir = [rootdir dirdir];
 
-for x = 1:numRat
+for x = 1:2:numRat
     imgloc = strcat(subdir,'/',int2str(x), '.png');
     cutimg = img2cut(:,x:31+x);
     imwrite(cutimg,imgloc);    
@@ -32,8 +50,16 @@ CutImages = imageDatastore(...
     'LabelSource', 'foldernames');
 [CNNlabel, CNNscore] = classify(dNet, CutImages);
 
+
+
 %% Scaling Score
 
+score = CNNscore(:,1);
+score = transpose(score);
+
+[mask, I] = wtnms(score, 10);
+
+%{
 pScore = zeros(size(CNNscore,1),1);
 
 for id = 1: 17
@@ -69,15 +95,27 @@ for id = size(CNNscore,1) - 17 : size(CNNscore,1)
    end
    pScore(id) = pScore(id)/numadded;
 end
-
+%}
 
 %% Plotting
-Y = 2*(pScore(:,1) - .5);
-X = 0:size(Y,1)-1;
-figure
-plot(X,Y)
-figure
-imshow(img2cut);
+Y = 2*(score(1,:) - .5);
+X = 0:size(Y,2)-1;
+
+%figure
+%plot(X,Y)
+%figure
+%imshow(img2cut);
+
+%% Img Locs
+%{
+for id = 1 : size(I,2)
+    loc = (2*I(id)-1);
+    cutimg = img2cut(:,loc:31+loc);
+    figure;
+    imshow(cutimg);
+end    
+imtool(img2cut);
+%}
 
 %% Clean Up
 myFolder = strcat('C:\Users\schaffqg\Documents\GitHub\Image-Translation\Code\cutImages\',num2str(ratio),'\1');

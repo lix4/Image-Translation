@@ -2,7 +2,7 @@ clc
 close all;
 clear all;
 
-img = imread('./removing_text.png');
+img = imread('./6_8.png');
 % use Kmeans to find background color
 k = 2;
 seed = 10; % or any fixed integer, for debugging. 
@@ -51,10 +51,9 @@ end
 
 f_img = im2uint8(double_img);
 % imshow(f_img);
-
 % insert text
 text_str = cell(1,1);
-text_str{1} = [''];
-position = [30 8]; 
-RGB = insertText(f_img, position, text_str,'BoxOpacity', 0, 'FontSize', 20, 'TextColor', means(1, :));
+text_str{1} = ['???'];
+position = [7 2]; 
+RGB = insertText(f_img, position, text_str,'BoxOpacity', 0, 'FontSize', 15, 'TextColor', means(1, :), 'Font', 'MS PMincho');
 imshow(RGB);
