@@ -2,12 +2,23 @@ clc
 close all;
 clear all;
 
-img = imread('./6_8.png');
+word = 'Calvin';
+word_keySet =   {'Calvin'};
+word_valueSet = {'????'};
+word_dictionary = containers.Map(word_keySet, word_valueSet);
+
+% font_keySet = {};
+% pixel_valueSet = {};
+% font_conversion_dictionary = containers.Map(font_keySet, pixel_valueSet);
+
+img = imread('./removing_text.png');
+
 % use Kmeans to find background color
 k = 2;
 seed = 10; % or any fixed integer, for debugging. 
 rand('state', seed);
 means = rand(k,3); % creates a k-by-3 matrix of random numbers
+
 
 iteration = 10;
 for iter = 1:iteration
@@ -17,7 +28,6 @@ for iter = 1:iteration
     numbackgroundPixels = 1;
     backgroundColor = means(1, :);
     for d = 1:k
-%         disp('------------------------------------------');
         num = numel(r(find(r == d)));
         if num > numbackgroundPixels
             numbackgroundPixels = num;
@@ -50,10 +60,11 @@ for o = 1:row
 end
 
 f_img = im2uint8(double_img);
-% imshow(f_img);
-% insert text
+[row col cha] = size(img);
 text_str = cell(1,1);
-text_str{1} = ['???'];
-position = [7 2]; 
-RGB = insertText(f_img, position, text_str,'BoxOpacity', 0, 'FontSize', 15, 'TextColor', means(1, :), 'Font', 'MS PMincho');
+text_str{1} = [word_dictionary(word)];
+r_position = row / 2;
+c_position = col / 2;
+position = [c_position r_position];
+RGB = insertText(f_img, position, text_str,'BoxOpacity', 0, 'FontSize', 14, 'TextColor', means(1, :), 'Font', 'MS PMincho', 'AnchorPoint', 'Center');
 imshow(RGB);
