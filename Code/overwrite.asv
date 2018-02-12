@@ -1,19 +1,18 @@
-% function [] = overwrite(img, word)
 clc
 close all;
 clear all;
 
-word = 'Nokia';
-word_keySet =   {'Calvin', 'PanJab', 'Nokia'};
-word_valueSet = {'????', '??????', '???'};
+word = 'Calvin';
+word_keySet =   {'Calvin', 'PanJab'};
+word_valueSet = {'????', '??'};
 word_dictionary = containers.Map(word_keySet, word_valueSet);
 
 % font_keySet = {};
 % pixel_valueSet = {};
 % font_conversion_dictionary = containers.Map(font_keySet, pixel_valueSet);
 
-img = imread('./TestOverwrite/nokia.png');
-
+img = imread('./removing_text.png');
+imshow(img);
 % use Kmeans to find background color
 k = 2;
 seed = 10; % or any fixed integer, for debugging. 
@@ -61,7 +60,6 @@ end
 
 for o = 1:row
     for p = 1:col
-        
         double_img(o, p, 1) = backgroundColor(:, 1);
         double_img(o, p, 2) = backgroundColor(:, 2);
         double_img(o, p, 3) = backgroundColor(:, 3);
@@ -75,7 +73,5 @@ text_str{1} = [word_dictionary(word)];
 r_position = row / 2;
 c_position = col / 2;
 position = [c_position r_position];
-foreground = uint8(foregroundColor(1, :) * 255)
-RGB = insertText(f_img, position, text_str,'BoxOpacity', 0, 'FontSize', 40, 'TextColor', foreground, 'Font', 'MS PMincho', 'AnchorPoint', 'Center');
-imshow(RGB);
-% end
+RGB = insertText(f_img, position, text_str,'BoxOpacity', 0, 'FontSize', 17, 'TextColor', means(2, :), 'Font', 'MS PMincho', 'AnchorPoint', 'Center');
+% imshow(RGB);
