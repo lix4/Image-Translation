@@ -1,6 +1,6 @@
 scales = [1.5:-0.1:0.5];
 for id = 1 : size(scales,2)
-    myFolder = strcat('C:\Users\schaffqg\Documents\GitHub\Image-Translation\Code\cutImages\',num2str(scales(id)),'\1');
+    myFolder = strcat(pwd,'\cutImages\',num2str(scales(id)),'\1');
     % Check to make sure that folder actually exists.  Warn user if it doesn't.
     if ~isdir(myFolder)
         errorMessage = sprintf('Error: The following folder does not exist:\n%s', myFolder);

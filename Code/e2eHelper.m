@@ -33,7 +33,7 @@ rootdir = strcat(curdir,imagesdir);
 dirdir = strcat(num2str(ratio), '/1');
 subdir = [rootdir dirdir];
 
-for x = 1:floor(2*(ratio+5)):numRat
+for x = 1:2:numRat
     num = (x - 1)/2;
     if (num < 10)
         imgloc = strcat(subdir,'/0',int2str(num), '.png');
@@ -126,7 +126,7 @@ imtool(img2cut);
 %}
 
 %% Clean Up
-myFolder = strcat('C:\Users\schaffqg\Documents\GitHub\Image-Translation\Code\cutImages\',num2str(ratio),'\1');
+myFolder = strcat(pwd,'\cutImages\',num2str(ratio),'\1');
 % Check to make sure that folder actually exists.  Warn user if it doesn't.
 if ~isdir(myFolder)
   errorMessage = sprintf('Error: The following folder does not exist:\n%s', myFolder);
