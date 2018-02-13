@@ -92,12 +92,7 @@ while (complete == 0)
     maximum = max(avgScores);
     id = find(avgScores == maximum);
     word2Translate = letters{id};
-    tOrF = isRealWord(word2Translate);
-    if (tOrF == 1)
-        complete = 1;
-    else
-        avgScores(id) = -1;
-    end    
+    isRealWorld(word2Translate);
 end    
     curScale = scales(id);
-    OrigImage = outputs{id,3};
+

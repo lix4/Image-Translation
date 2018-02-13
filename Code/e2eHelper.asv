@@ -1,9 +1,9 @@
-function [X, Y, img2cut, I] = e2eHelper (img2cut, ratio)
+%%function [X, Y, img2cut, I] = e2eHelper (img2cut, ratio)
 %% debugging
-%{
+%%{
 curdir = pwd
 imagesdir = '/images2Cut/';
-rootdir = strcat(curdir,imagesdir,'31_1.png')
+rootdir = strcat(curdir,imagesdir,'6_1.png')
 
 
 img2cut = imread(rootdir);
@@ -12,8 +12,8 @@ if (size(img2cut,3) == 3)
     img2cut = rgb2gray(img2cut);
 end
 
-ratio = .7;
-%}
+ratio = .5;
+%%}
 
 
 %% actual start
@@ -64,7 +64,7 @@ CutImages = imageDatastore(...
 score = CNNscore(:,1);
 score = transpose(score);
 
-[mask, I] = wtnms(score, 2);
+[mask, I] = wtnms(score, 4);
 
 %{
 pScore = zeros(size(CNNscore,1),1);
@@ -108,9 +108,9 @@ end
 Y = 2*(score(1,:) - .5);
 X = 0:size(Y,2)-1;
 
-%%figure;
-%%subplot(2,1,1), plot(X,Y);
-%%subplot(2,1,2), imshow(img2cut);
+figure;
+subplot(2,1,1), plot(X,Y);
+subplot(2,1,2), imshow(img2cut);
 
 
 

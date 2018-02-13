@@ -1,5 +1,6 @@
 function [avgScore, word] = recognize(ratio, dNet);
 %% Recognizing characters
+
 curdir = pwd;
 imagesdir = '/cutImages/';
 rootdir = strcat(curdir,imagesdir);
@@ -19,7 +20,8 @@ fprintf(scalez);
 totScore = 0;
 word = '';
 for n = 1 : size(CNNscore,1)
-    totScore =  totScore + max(CNNscore(n,:));
+    curScore = max(CNNscore(n,:)); 
+    totScore =  totScore + curScore;
     word = strcat(word , char(CNNlabel(n)));
 end
 
