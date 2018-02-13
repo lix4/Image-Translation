@@ -1,18 +1,28 @@
-% function [] = overwrite(img, word)
+function [r_img] = overwrite(img, word)
 clc
 close all;
 clear all;
 
 word = 'Nokia';
-word_keySet =   {'Calvin', 'PanJab', 'Nokia'};
-word_valueSet = {'????', '??????', '???'};
+%load dictionary
+% myDictionary = readtable('dictionary.xlsx', 'TextType', 'string');
+% row_name = myDictionary.raw == 'Nokia';
+% vars = {'translation'};
+% val = myDictionary(row_name, vars);
+% myDictionary({word}, :)
+word_keySet =   {'Calvin', 'PanJab', 'nokia', 'world'};
+word_valueSet = {'????', '?????', '???', '??'};
 word_dictionary = containers.Map(word_keySet, word_valueSet);
+
+% fontsize_keySet = {'Nokia'};
+% fontsize_valueSet = {40};
+% fontsize_dictionary = containers.Map(fontsize_keySet, word_valueSet);
 
 % font_keySet = {};
 % pixel_valueSet = {};
 % font_conversion_dictionary = containers.Map(font_keySet, pixel_valueSet);
 
-img = imread('./TestOverwrite/nokia.png');
+% img = imread('./TestOverwrite/nokia.png');
 
 % use Kmeans to find background color
 k = 2;
@@ -75,7 +85,8 @@ text_str{1} = [word_dictionary(word)];
 r_position = row / 2;
 c_position = col / 2;
 position = [c_position r_position];
-foreground = uint8(foregroundColor(1, :) * 255)
+foreground = uint8(foregroundColor(1, :) * 255);
 RGB = insertText(f_img, position, text_str,'BoxOpacity', 0, 'FontSize', 40, 'TextColor', foreground, 'Font', 'MS PMincho', 'AnchorPoint', 'Center');
 imshow(RGB);
-% end
+r_img = RGB;
+end
