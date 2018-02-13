@@ -89,7 +89,9 @@ end
 
 %% Getting word
 complete = 0;
-while (complete == 0)
+maximum = 1;
+while (complete == 0 && maximum > 0)
+    
     maximum = max(avgScores);
     id = find(avgScores == maximum);
     word2Translate = letters{id};
@@ -103,8 +105,9 @@ end
     curScale = scales(id);
     OrigImage = outputs{id,5};
     
-    %%
+%% Translate word and remove and insert
     
+
     img = orig;
     word = word2Translate;
     word_keySet =   {'Calvin', 'PanJab', 'nokia', 'world'};
@@ -182,4 +185,5 @@ end
     position = [c_position r_position];
     foreground = uint8(foregroundColor(1, :) * 255);
     RGB = insertText(f_img, position, text_str,'BoxOpacity', 0, 'FontSize', 40, 'TextColor', foreground, 'Font', 'MS PMincho', 'AnchorPoint', 'Center');
+    figure;
     imshow(RGB);
