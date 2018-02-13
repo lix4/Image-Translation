@@ -33,7 +33,7 @@ rootdir = strcat(curdir,imagesdir);
 dirdir = strcat(num2str(ratio), '/1');
 subdir = [rootdir dirdir];
 
-for x = 1:2:numRat
+for x = 1:floor(2*(ratio+5)):numRat
     num = (x - 1)/2;
     if (num < 10)
         imgloc = strcat(subdir,'/0',int2str(num), '.png');
