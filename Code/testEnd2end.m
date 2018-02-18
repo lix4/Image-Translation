@@ -91,7 +91,9 @@ end
 
 %% Getting word
 complete = 0;
-while (complete == 0)
+maximum = 1;
+while (complete == 0 && maximum > 0)
+    
     maximum = max(avgScores);
     id = find(avgScores == maximum);
     word2Translate = letters{id};
@@ -105,7 +107,9 @@ end
     curScale = scales(id);
     OrigImage = outputs{id,5};
     
-    %%
+
+%% Translate word and remove and insert
+    
     img = orig;
     se = strel('square',5);
     opened_img = imopen(img(:, :, 1), se);
