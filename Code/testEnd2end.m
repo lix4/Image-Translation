@@ -1,7 +1,9 @@
+feature('DefaultCharacterSet', 'UTF8')
+
 %% function testEnd2End(image)
 curdir = pwd
 imagesdir = '/images2Cut/';
-rootdir = strcat(curdir,imagesdir,'31_1.png')
+rootdir = strcat(curdir,imagesdir,'31_1.png');
 
 img2cut = imread(rootdir);
 orig = imread(rootdir);
@@ -104,21 +106,48 @@ end
     OrigImage = outputs{id,5};
     
     %%
-    
     img = orig;
-    word = word2Translate;
-    word_keySet =   {'Calvin', 'PanJab', 'nokia', 'world'};
-    word_valueSet = {'????', '??', '???', '??'};
+    se = strel('square',5);
+    opened_img = imopen(img(:, :, 1), se);
+    mask = imbinarize(opened_img);
+    imshow(mask);
+    
+    % calculate the bounding box in order to calculate font size
+    bounding_box = regionprops(mask, 'BoundingBox');
+    [b_row b_col] = size(bounding_box);
+    g_height = 0;
+    for a = 1:b_row
+        row = bounding_box(a)
+        g_height = g_height + row.BoundingBox(4);
+    end
+    g_height = g_height / b_row;
+    
+    % calculate general centroid of the whole text
+    centroid = regionprops(mask, 'Centroid');
+    [c_row c_col] = size(centroid);
+    g_x = 0;
+    g_y = 0;
+    for k = 1:c_row
+        row = centroid(k);
+        x = row.Centroid(1);
+        g_x = g_x + x;
+        y = row.Centroid(2);
+        g_y = g_y + y;
+    end
+    
+    g_x = g_x / c_row;
+    g_y = g_y / c_row;
+    
+    word = 'bank';
+    word_keySet =   {'Calvin', 'PanJab', 'nokia', 'world','bank'};
+    word_valueSet = {'????', '??', '???', '??', '??'};
     word_dictionary = containers.Map(word_keySet, word_valueSet);
 
-    % fontsize_keySet = {'Nokia'};
-    % fontsize_valueSet = {40};
-    % fontsize_dictionary = containers.Map(fontsize_keySet, word_valueSet);
-
-    % font_keySet = {};
-    % pixel_valueSet = {};
-    % font_conversion_dictionary = containers.Map(font_keySet, pixel_valueSet);
-
+%     trueGaussian= fspecial('gaussian', [5,5],3);
+%     filtered_img = filter2(trueGaussian, img);
+%     imtool(uint8(filtered_img));
+    
+    %%
     % use Kmeans to find background color
     k = 2;
     seed = 10; % or any fixed integer, for debugging. 
@@ -166,7 +195,6 @@ end
 
     for o = 1:row
         for p = 1:col
-
             double_img(o, p, 1) = backgroundColor(:, 1);
             double_img(o, p, 2) = backgroundColor(:, 2);
             double_img(o, p, 3) = backgroundColor(:, 3);
@@ -177,9 +205,10 @@ end
     [row col cha] = size(img);
     text_str = cell(1,1);
     text_str{1} = [word_dictionary(word)];
-    r_position = row / 2;
-    c_position = col / 2;
+    r_position = g_y;
+    c_position = g_x;
+    font_size = uint8(g_height);
     position = [c_position r_position];
     foreground = uint8(foregroundColor(1, :) * 255);
-    RGB = insertText(f_img, position, text_str,'BoxOpacity', 0, 'FontSize', 40, 'TextColor', foreground, 'Font', 'MS PMincho', 'AnchorPoint', 'Center');
+    RGB = insertText(f_img, position, text_str,'BoxOpacity', 0, 'FontSize', font_size, 'TextColor', foreground, 'Font', 'MS PMincho', 'AnchorPoint', 'Center');
     imshow(RGB);
