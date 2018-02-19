@@ -1,9 +1,10 @@
+function testEnd2end(loc)
+
 feature('DefaultCharacterSet', 'UTF8')
 
-%% function testEnd2End(image)
 curdir = pwd
 imagesdir = '/images2Cut/';
-rootdir = strcat(curdir,imagesdir,'31_1.png');
+rootdir = strcat(curdir,imagesdir,loc);
 
 img2cut = imread(rootdir);
 orig = imread(rootdir);
@@ -91,7 +92,9 @@ end
 
 %% Getting word
 complete = 0;
-maximum = 1;
+maximum = max(avgScores);
+id = find(avgScores == maximum);
+actualword = letters{id};
 while (complete == 0 && maximum > 0)
     
     maximum = max(avgScores);
@@ -100,6 +103,7 @@ while (complete == 0 && maximum > 0)
     tOrF = isRealWord(word2Translate);
     if (tOrF == 1)
         complete = 1;
+        actualword = letters{id};
     else
         avgScores(id) = -1;
     end    
@@ -142,7 +146,7 @@ end
     g_x = g_x / c_row;
     g_y = g_y / c_row;
     
-    word = 'bank';
+    word = actualword;
     word_keySet =   {'Calvin', 'PanJab', 'nokia', 'world','bank'};
     word_valueSet = {'????', '??', '???', '??', '??'};
     word_dictionary = containers.Map(word_keySet, word_valueSet);
@@ -208,11 +212,19 @@ end
     f_img = im2uint8(double_img);
     [row col cha] = size(img);
     text_str = cell(1,1);
-    text_str{1} = [word_dictionary(word)];
+        if (isKey(word_dictionary, word) == 1)
+        text_str{1} = [word_dictionary(word)];
+    else
+        text_str{1} = [word];
+    end  
     r_position = g_y;
     c_position = g_x;
     font_size = uint8(g_height);
     position = [c_position r_position];
     foreground = uint8(foregroundColor(1, :) * 255);
     RGB = insertText(f_img, position, text_str,'BoxOpacity', 0, 'FontSize', font_size, 'TextColor', foreground, 'Font', 'MS PMincho', 'AnchorPoint', 'Center');
+    figure();
     imshow(RGB);
+	
+	%% clean up files
+    quickClean();

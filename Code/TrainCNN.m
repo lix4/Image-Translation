@@ -67,7 +67,7 @@ trainSet = l.trainSet;
 %}
 
 %% Training CNN Detector
-dCNN = 'CNN/Detector.mat';
+dCNN = 'CNN/detector_cnn.mat';
 fprintf('Training Detector\n');
 if exist(dCNN) == 2
     l = load(dCNN);
@@ -107,10 +107,14 @@ else
 end
 %% Looking at accuracy of Detector CNN
     fprintf('Looking at detector accuracy\n');
-    predictedLabels = classify(dNet,testDImages);
-    valLabels = testDImages.Labels;
-    accuracy = sum(predictedLabels == valLabels)/numel(valLabels)
-
+    [CNNlabel, CNNscore] = classify(dNet,tesDImages);
+    
+    
+%% actually look at accuracy    
+    yTest = tesDImages.Labels;
+    CNNAcc = getData(CNNlabel, yTest, 'CNN');
+    
+%{    
 %% Initializing CNN REcog
 curdir = pwd;
 fprintf('Reading recognizor images\n');
@@ -202,3 +206,4 @@ end
     predictedLabels = classify(rNet,testRimages);
     valLabels = testRimages.Labels;
     accuracy = sum(predictedLabels == valLabels)/numel(valLabels)
+%}    
