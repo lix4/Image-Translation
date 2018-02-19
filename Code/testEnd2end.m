@@ -142,14 +142,11 @@ end
     g_x = g_x / c_row;
     g_y = g_y / c_row;
     
-    word = 'bank';
+    word = word2Translate;
     word_keySet =   {'Calvin', 'PanJab', 'nokia', 'world','bank'};
     word_valueSet = {'????', '??', '???', '??', '??'};
     word_dictionary = containers.Map(word_keySet, word_valueSet);
 
-%     trueGaussian= fspecial('gaussian', [5,5],3);
-%     filtered_img = filter2(trueGaussian, img);
-%     imtool(uint8(filtered_img));
     
     %%
     % use Kmeans to find background color
