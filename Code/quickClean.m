@@ -1,3 +1,4 @@
+function quickClean()
 scales = [1.5:-0.1:0.5];
 for id = 1 : size(scales,2)
     myFolder = strcat(pwd,'\cutImages\',num2str(scales(id)),'\1');
